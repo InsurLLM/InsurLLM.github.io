@@ -88,25 +88,52 @@ main {
     margin: 0 auto;
 }
 
+/* 🔹 HERO SECTION WITH BACKGROUND IMAGE + ANIMATION (NEW) */
 .hero {
+    position: relative;                     /* NEW */
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 80px 20px;
-    min-height: 60vh;
+    padding: 100px 20px;                    /* slightly taller hero */
+    min-height: 80vh;                       /* more “landing page” feel */
+    color: var(--text-light);               /* text on dark background */
+    overflow: hidden;                       /* hide animated bg edges */
+}
+
+/* Background image + gradient overlay (NEW)
+   Change url("images/hero-bg.jpg") to the real path of your image */
+.hero::before {                             /* NEW */
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(
+            rgba(144, 163, 189, 0.8),
+            rgba(53, 110, 195, 0.8)
+        ),
+        url("images/Background1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: scale(1.05);
+    z-index: -1;
+    animation: heroBgZoom 16s ease-in-out infinite alternate;
 }
 
 .hero-content {
     max-width: 800px;
+    position: relative;                     /* sit above ::before */
+    animation: fadeInUp 0.9s ease-out both; /* NEW */
 }
 
 .subtitle {
     font-size: 1.2rem;
-    color: #555;
+    color: #e5eaf2;                         /* lighter on dark background */
     margin-top: 1rem;
 }
 
+/* --- Content Sections --- */
 .content-section {
     padding: 60px 5%;
 }
@@ -125,12 +152,14 @@ main {
     text-decoration: none;
     font-weight: 600;
     margin-top: 20px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* NEW: add shadow anim */
+    box-shadow: 0 8px 18px rgba(0, 82, 204, 0.3);                                        /* NEW */
 }
 
 .cta-button:hover {
     background-color: var(--secondary-color);
     transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(0, 82, 204, 0.4);                                       /* NEW */
 }
 
 /* --- Features Section --- */
@@ -167,6 +196,27 @@ footer {
     color: var(--text-light);
 }
 
+/* --- Simple Animations (NEW) --- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes heroBgZoom {
+    from {
+        transform: scale(1.05);
+    }
+    to {
+        transform: scale(1.12);
+    }
+}
+
 /* --- Responsive Design --- */
 @media (max-width: 768px) {
     h1 {
@@ -175,4 +225,78 @@ footer {
     nav ul {
         display: none; /* Simple responsive hide for demo */
     }
+    .hero {
+        padding: 80px 20px;
+        min-height: 70vh;
+    }
+}
+
+/* Layout for nav right side */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 999px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+    background-color: rgba(148, 163, 184, 0.2);
+    transform: translateY(-1px);
+}
+
+/* === DARK MODE OVERRIDES === */
+body.dark-theme {
+    --primary-color: #60a5fa;
+    --secondary-color: #93c5fd;             /* lighter blue for headings */
+    --background-light: #020617;
+    --text-color: #e5e7eb;
+    --text-light: #f9fafb;
+    --box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+
+    background-color: #020617;
+    color: var(--text-color);
+}
+
+/* Headings readable on dark */
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3 {
+    color: var(--text-light);
+}
+
+/* Subtitle slightly dimmer but readable */
+body.dark-theme .subtitle {
+    color: #cbd5f5;
+}
+
+/* ✅ Fix the “white box” issue */
+body.dark-theme .bg-light {
+    background-color: #020617;              /* no more bright white sections */
+}
+
+body.dark-theme .feature-card {
+    background-color: #020617;              /* card background dark */
+    color: var(--text-color);               /* text stays light */
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6); /* a bit more depth in dark mode */
+    border: 1px solid #1f2937;
+}
+
+/* Header & footer also adapt */
+body.dark-theme header {
+    background: #020617;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+
+body.dark-theme footer {
+    background-color: #020617;
 }
